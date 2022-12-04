@@ -1,27 +1,24 @@
 package com.module.cache.key;
 
 import com.module.cache.annotation.CacheParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 public class PostCacheKeyGenerator implements KeyGenerator {
 
+    Logger logger = LoggerFactory.getLogger(PostCacheKeyGenerator.class);
+
     @Override
     public Object generate(Object target, Method method, Object... params) {
-//        System.out.println(Arrays.toString(method.getParameterTypes()));
-//        System.out.println(Arrays.toString(method.getAnnotationsByType(CacheParam.class)));
-//        System.out.println(Arrays.deepToString(method.getParameterAnnotations()));
-//        System.out.println(Arrays.toString(method.getAnnotatedParameterTypes()));
-//        System.out.println(method.getAnnotation(CacheParam.class));
+        logger.info("[Redis Cache logger] Start CacheKeyGenerating...");
         return String.format("%s", arrayToDelimitedString(method, params));
     }
 
     public String arrayToDelimitedString(Method method, Object... params) {
-        System.out.println("arrayToDelimitedString : ");
         final var sb = new StringBuilder();
         //메소드의 어노테이션 정보 가져오기
         //Annotation[] annotations = method.getDeclaredAnnotations();
@@ -37,7 +34,6 @@ public class PostCacheKeyGenerator implements KeyGenerator {
             }
         }
 
-        System.out.println("sb.toString() : " + sb.toString());
         return sb.toString();
     }
 }

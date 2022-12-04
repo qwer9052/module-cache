@@ -32,36 +32,15 @@ public class RedisConfiguration {
     @Value("${spring.redis.port}")
     private int port;
 
-//    @Bean
-//    public ObjectMapper objectMapper() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // timestamp 형식 안따르도록 설정
-//        mapper.registerModules(new JavaTimeModule(), new Jdk8Module()); // LocalDateTime 매핑을 위해 모듈 활성화
-//        return mapper;
-//    }
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
 
-
-//    @Bean
-//    public CacheManager cacheManager() {
-//        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory());
-//        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())) // Value Serializer 변경
-//                .prefixKeysWith("Test:") // Key Prefix로 "Test:"를 앞에 붙여 저장
-//                .entryTtl(Duration.ofMinutes(30)); // 캐시 수명 30분
-//        builder.cacheDefaults(configuration);
-//        return builder.build();
-//    }
-
     @Bean(name = POST_KEY_GENERATOR)
     public KeyGenerator postCacheKeyGenerator(){
         return new PostCacheKeyGenerator();
     }
-
 
     /*
      Redis Cache 적용을 위한 RedisCacheManager 설정
